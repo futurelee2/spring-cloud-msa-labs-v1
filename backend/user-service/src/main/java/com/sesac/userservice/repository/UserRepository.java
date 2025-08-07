@@ -1,6 +1,5 @@
 package com.sesac.userservice.repository;
 
-
 import com.sesac.userservice.entitiy.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

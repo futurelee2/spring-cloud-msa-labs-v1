@@ -1,4 +1,4 @@
-package com.sesac.userservice.entitiy;
+package com.sesac.orderservice.entitiy;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,34 +16,26 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "users")
+@Table(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
-    private String name;
+    @Column
+    private Long userId;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    private BigDecimal totalAmount;
 
-    private BigDecimal price;
-
-    @Column(nullable = false)
-    private Integer stockQuantity = 0;
-    private String category;
-    private String imageUrl;
+    private String status = "PENDING";
 
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
-
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
