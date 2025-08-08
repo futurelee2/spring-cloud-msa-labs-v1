@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.38/57f8f5e02e92a30fd21b80cbd426a4172b5f8e29/lombok-1.18.38.jar" />
+        </processorPath>
+        <module name="backend.order-service.main" />
+        <module name="backend.user-service.main" />
+        <module name="backend.product-service.main" />
+      </profile>
+    </annotationProcessing>
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="com.sesac.order-service.main" options="-parameters" />
-      <module name="com.sesac.order-service.test" options="-parameters" />
-      <module name="config-server" options="-parameters" />
-      <module name="config-server.main" options="-parameters" />
-      <module name="config-server.test" options="-parameters" />
-      <module name="order-service" options="-parameters" />
-      <module name="order-service.main" options="-parameters" />
-      <module name="order-service.test" options="-parameters" />
-      <module name="product-service" options="-parameters" />
-      <module name="product-service.main" options="-parameters" />
-      <module name="product-service.test" options="-parameters" />
-      <module name="user-service" options="-parameters" />
-      <module name="user-service.main" options="-parameters" />
-      <module name="user-service.test" options="-parameters" />
+      <module name="backend.order-service" options="-parameters" />
+      <module name="backend.order-service.main" options="-parameters" />
+      <module name="backend.order-service.test" options="-parameters" />
+      <module name="backend.product-service" options="-parameters" />
+      <module name="backend.product-service.main" options="-parameters" />
+      <module name="backend.product-service.test" options="-parameters" />
+      <module name="backend.user-service" options="-parameters" />
+      <module name="backend.user-service.main" options="-parameters" />
+      <module name="backend.user-service.test" options="-parameters" />
     </option>
   </component>
 </project>

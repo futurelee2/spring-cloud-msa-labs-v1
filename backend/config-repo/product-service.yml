@@ -1,0 +1,7 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: product-service
+  datasource:
+    url: jdbc:mysql://localhost:3307/product_service_db

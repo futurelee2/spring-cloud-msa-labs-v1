@@ -10,7 +10,8 @@ spring:
     config:
       server:
         native:
-          search-locations:
+          search-locations: file:///${user.dir}/backend/config-repo # 상대 경로 수정
 #          - file://H:\mr\spring-cloud-msa-labs-v1\backend\config-repo\
-          - .\backend\config-repo\
+#          - .\backend\config-repo\
+
 
