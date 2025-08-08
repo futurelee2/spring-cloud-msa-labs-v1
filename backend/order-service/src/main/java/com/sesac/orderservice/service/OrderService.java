@@ -1,5 +1,6 @@
 package com.sesac.orderservice.service;
 
+import com.sesac.orderservice.dto.OrderRequestDto;
 import com.sesac.orderservice.entity.Order;
 import com.sesac.orderservice.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,4 +19,11 @@ public class OrderService {
                 () -> new RuntimeException("Order not found with id: " + id)
         );
     }
+
+    //주문 생성 (고객이 주문했을 때)
+    //유저 정보
+    //상품 정보
+    public void createOrder(OrderRequestDto request) {
+    }
+
 }
