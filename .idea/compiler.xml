@@ -16,6 +16,9 @@
       <module name="config-server" options="-parameters" />
       <module name="config-server.main" options="-parameters" />
       <module name="config-server.test" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
+      <module name="eureka-server.main" options="-parameters" />
+      <module name="eureka-server.test" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="order-service.main" options="-parameters" />
       <module name="order-service.test" options="-parameters" />

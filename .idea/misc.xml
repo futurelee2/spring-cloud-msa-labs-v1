@@ -3,6 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/backend/config-server" />
+    <file type="web" url="file://$PROJECT_DIR$/backend/eureka-server" />
     <file type="web" url="file://$PROJECT_DIR$/backend/order-service" />
     <file type="web" url="file://$PROJECT_DIR$/backend/product-service" />
     <file type="web" url="file://$PROJECT_DIR$/backend/user-service" />
