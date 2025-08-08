@@ -5,3 +5,9 @@ spring:
     name: user-service
   datasource:
     url: jdbc:mysql://localhost:3307/user_service_db
+    
+user:
+  service:
+    name: "User Service"
+    version: "2.0"
+    description: "사용자 정보를 관리하는 마이크로서비스"

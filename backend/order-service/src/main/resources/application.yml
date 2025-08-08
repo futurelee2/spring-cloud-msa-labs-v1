@@ -1,18 +1,26 @@
-pring:
+#spring:
+#  application:
+#    name: order-service
+#  datasource:
+#    url: jdbc:mysql://localhost:3307/order_service_db
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: 123qwe
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#
+#server:
+#  port: 8083
+
+spring:
+  config:
+    import: "configserver:http://localhost:8888"
   application:
     name: order-service
-  datasource:
-    url: jdbc:mysql://localhost:3307/order_service_db
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: 123qwe
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-server:
-  port: 8083
+  profiles:
+    active: dev

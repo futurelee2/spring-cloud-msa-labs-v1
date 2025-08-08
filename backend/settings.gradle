@@ -1,5 +1,0 @@
-include 'product-service'
-include 'user-service'
-include 'order-service'
-include 'config-service'
-

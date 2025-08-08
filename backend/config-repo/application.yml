@@ -10,3 +10,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+#actuator 옵션
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, refresh
+    endpoint:
+      refresh:
+        enabled: true
