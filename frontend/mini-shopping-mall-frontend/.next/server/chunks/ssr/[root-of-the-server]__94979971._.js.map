@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///H:/mr/spring-cloud-msa-labs-v1/frontend/mini-shopping-mall-frontend/src/app/page.tsx"],"sourcesContent":["import Link from 'next/link';\r\n\r\nexport default function Home() {\r\n  return (\r\n    <div className=\"container mx-auto p-8\">\r\n      <div className=\"text-center\">\r\n        <h1 className=\"text-4xl font-bold mb-8\">MSA 쇼핑몰</h1>\r\n        <p className=\"text-xl text-gray-600 mb-12\">\r\n          Spring Cloud + Next.js로 구축한 마이크로서비스 쇼핑몰\r\n        </p>\r\n        \r\n        <div className=\"max-w-md mx-auto space-y-4\">\r\n          <Link \r\n            href=\"/products\"\r\n            className=\"block bg-blue-500 text-white px-8 py-4 rounded-lg text-lg hover:bg-blue-600\"\r\n          >\r\n            상품 둘러보기\r\n          </Link>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  );\r\n}"],"names":[],"mappings":";;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC;YAAI,WAAU;;8BACb,8OAAC;oBAAG,WAAU;8BAA0B;;;;;;8BACxC,8OAAC;oBAAE,WAAU;8BAA8B;;;;;;8BAI3C,8OAAC;oBAAI,WAAU;8BACb,cAAA,8OAAC,4JAAA,CAAA,UAAI;wBACH,MAAK;wBACL,WAAU;kCACX;;;;;;;;;;;;;;;;;;;;;;AAOX","debugId":null}}]
+}
