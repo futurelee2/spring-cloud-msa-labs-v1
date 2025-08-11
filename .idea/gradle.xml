@@ -4,6 +4,15 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/backend/api-gateway" />
+        <option name="gradleJvm" value="24" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/backend/api-gateway" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/backend/config-server" />
         <option name="gradleJvm" value="24" />
         <option name="modules">

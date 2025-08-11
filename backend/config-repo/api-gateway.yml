@@ -1,0 +1,31 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: user-service
+            uri: lb://user-service # 여기로 감
+            predicates:
+              - Path=/api/users/** # 이렇게 요청이 오면
+            filters:
+              - StripPrefix=1 # /api/users/**  -> /users/** (1개 제거)
+
+
+          - id: product-service
+            uri: lb://product-service
+            predicates:
+              - Path=/api/products/**
+            filters:
+              - StripPrefix=1
+
+          - id: order-service
+            uri: lb://order-service
+            predicates:
+              - Path=/api/orders/**
+            filters:
+              - StripPrefix=1
+
