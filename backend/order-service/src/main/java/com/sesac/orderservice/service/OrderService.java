@@ -8,6 +8,7 @@ import com.sesac.orderservice.dto.OrderRequestDto;
 import com.sesac.orderservice.entity.Order;
 import com.sesac.orderservice.repository.OrderRepository;
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,8 +50,9 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    //유저 정보
-    //상품 정보
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
 
 
 }

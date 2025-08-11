@@ -29,7 +29,7 @@ public class UserService {
         // 1. 이메일로 사용자 조회
         User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("Invalid email or password"));
         // 2. 패스워드 검증
-        if (passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("invalid password");
         }
         // 3. JWT 토큰 생성
