@@ -9,7 +9,7 @@ spring:
 # User Service 호출에 대한 회복성  패턴
 resilience4j:
   circuitbreaker:
-    circuitBrakerAspectOrder: 1 # 제일 먼저 실행 (순서 결정)
+    circuitBreakerAspectOrder: 1 # 제일 먼저 실행 (순서 결정)
     instances:
       user-service: # @CircuitBreaker(name = "user-service"..) 를 의미
         sliding-window-type: count-based # user서비스를 order서비스에서 호출할 때, 호출 횟수를 카운트
