@@ -6,6 +6,7 @@ import com.sesac.orderservice.client.dto.ProductDto;
 import com.sesac.orderservice.client.dto.UserDto;
 import com.sesac.orderservice.dto.OrderRequestDto;
 import com.sesac.orderservice.entity.Order;
+import com.sesac.orderservice.facade.UserServiceFacade;
 import com.sesac.orderservice.repository.OrderRepository;
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final UserServiceClient userServiceClient;
+    //private final UserServiceClient userServiceClient; // Openfeign 추상화 클라이언트
+    private final UserServiceFacade  userServiceFacade;
     private final ProductServiceClient productServiceClient;
 
     public Order findById(Long id) {
@@ -32,7 +34,8 @@ public class OrderService {
     @Transactional
     public Order createOrder(OrderRequestDto request) {
         // 주문했을 때 order 만드는게 목적
-        UserDto user = userServiceClient.getUserById(request.getUserId());
+        UserDto user = userServiceFacade.getUserWithFallback(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
+//        UserDto user = userServiceClient.getUserById(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
         if (user == null) throw new RuntimeException("User not found with id: " + request.getUserId());
 
         ProductDto product =  productServiceClient.getProductById(request.getProductId());
