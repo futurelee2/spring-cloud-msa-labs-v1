@@ -38,6 +38,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.6'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
+	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+	implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
+
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

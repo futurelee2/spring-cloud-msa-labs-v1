@@ -5,11 +5,43 @@ spring:
       hibernate:
         format_sql: true
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] %-5level %logger{36} - %msg%n"
+
   level:
     com.sesac: DEBUG
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
+    io.micrometer.tracing: DEBUG
+
 
 info:
   environment: "Development"
   debug: true
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, tracing, refresh
+  tracing:
+    sampling:
+      probability: 1.0 # tracing 샘플링을 전부 가져옴 (운영에서는 낮게 사용)
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans # zipkin한테 전송
+
+
+otel: #opentelementry 설정
+  exporter: # 수집한 것을 zipkin 한테 전달
+    zipkin:
+      endpoint: http://localhost:9411/api/v2/spans
+  resource:
+    attributes:
+      service.name: ${spring.application.name}
+
+
+
+
+
