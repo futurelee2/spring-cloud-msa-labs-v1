@@ -33,7 +33,7 @@ public class UserController {
         }
     }
     @PostMapping("/login")
-    @Operation(summary = "로그인", description = "이메일과 패스워드로 로그인하고 JWT 토근을 발급합니다.") //swagger
+    @Operation(summary = "로그인", description = "이메일과 패스워드로 로그인하고 JWT 토큰을 발급합니다.") //swagger
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         try{
            LoginResponse response  = userService.login(request);

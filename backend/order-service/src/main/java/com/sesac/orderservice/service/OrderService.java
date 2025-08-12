@@ -23,9 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     //private final UserServiceClient userServiceClient; // Openfeign 추상화 클라이언트
-    //private final ProductServiceClient productServiceClient;
+    private final ProductServiceClient productServiceClient;
     private final OrderRepository orderRepository;
-    private final ProductServiceFacade productServiceFacade;
+//    private final ProductServiceFacade productServiceFacade;
     private final UserServiceFacade userServiceFacade;
     private final Tracer tracer;
 
@@ -54,8 +54,8 @@ public class OrderService {
 //        UserDto user = userServiceClient.getUserById(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
             if (user == null) throw new RuntimeException("User not found with id: " + request.getUserId());
 
-            ProductDto product =  productServiceFacade.getProductById(request.getProductId(), request.getQuantity());
-//        ProductDto product =  productServiceClient.getProductById(request.getProductId());
+//            ProductDto product =  productServiceFacade.getProductById(request.getProductId(), request.getQuantity());
+        ProductDto product =  productServiceClient.getProductById(request.getProductId());
             if (product == null) throw new RuntimeException("Product not found with id: " + request.getProductId());
 
             if (product.getStockQuantity() < request.getQuantity()){
