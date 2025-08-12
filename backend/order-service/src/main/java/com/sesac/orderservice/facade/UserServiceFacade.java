@@ -3,6 +3,7 @@ package com.sesac.orderservice.facade;
 import com.sesac.orderservice.client.UserServiceClient;
 import com.sesac.orderservice.client.dto.UserDto;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class UserServiceFacade {
 
     // fallbackMethod = 메서드의 이름을 가리킴
     @CircuitBreaker(name = "user-service", fallbackMethod = "getUserFallback") //기존 메서드를 wrapping 해서 회복성 패턴으로 감싸기
+    @Retry(name = "user-service")
     public UserDto getUserWithFallback(Long userId){
         log.info("User service 호출 시도 - userId = {}", userId);
         return userServiceClient.getUserById(userId);

@@ -9,6 +9,7 @@ spring:
 # User Service 호출에 대한 회복성  패턴
 resilience4j:
   circuitbreaker:
+    circuitBrakerAspectOrder: 1 # 제일 먼저 실행 (순서 결정)
     instances:
       user-service: # @CircuitBreaker(name = "user-service"..) 를 의미
         sliding-window-type: count-based # user서비스를 order서비스에서 호출할 때, 호출 횟수를 카운트
@@ -18,6 +19,13 @@ resilience4j:
         # 50% 실패 시 Circuit Open (슬라이딩 윈도우 내의 실패율이 50%를 초과하면 서킷 브레이커가 'OPEN' 상태로 전환)
         failure-rate-threshold: 50
         permitted-number-of-calls-in-half-open-state: 2 # half-open일 때 몇번 요청할지
+  retry:
+    retryAspectOrder: 2
+    instances:
+      user-service:
+        max-attempts: 2 # 최대 몇번 실행
+        wait-duration: 1s  #재시도 간격
+
 
 management:
   endpoints:
