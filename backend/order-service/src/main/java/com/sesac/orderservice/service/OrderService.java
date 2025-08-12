@@ -9,6 +9,8 @@ import com.sesac.orderservice.entity.Order;
 import com.sesac.orderservice.facade.ProductServiceFacade;
 import com.sesac.orderservice.facade.UserServiceFacade;
 import com.sesac.orderservice.repository.OrderRepository;
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +22,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class OrderService {
 
-    private final OrderRepository orderRepository;
     //private final UserServiceClient userServiceClient; // Openfeign 추상화 클라이언트
     //private final ProductServiceClient productServiceClient;
-
+    private final OrderRepository orderRepository;
     private final ProductServiceFacade productServiceFacade;
     private final UserServiceFacade userServiceFacade;
+    private final Tracer tracer;
 
 
     public Order findById(Long id) {
@@ -37,26 +39,44 @@ public class OrderService {
     //주문 생성 (고객이 주문했을 때)
     @Transactional
     public Order createOrder(OrderRequestDto request) {
-        // 주문했을 때 order 만드는게 목적
-        UserDto user = userServiceFacade.getUserWithFallback(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
+
+        // span 생성
+        Span span = tracer.nextSpan()
+                .name("createOrder")
+                .tag("order.userId", request.getUserId())
+                .tag("order.productId", request.getProductId())
+                .start();
+        // span 생성을 위해 기존에 작성한 내용 try 문 안에 넣기
+        try(Tracer.SpanInScope ws = tracer.withSpan(span)) { // => span 활성화 시키기
+
+            // 주문했을 때 order 만드는게 목적
+            UserDto user = userServiceFacade.getUserWithFallback(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
 //        UserDto user = userServiceClient.getUserById(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
-        if (user == null) throw new RuntimeException("User not found with id: " + request.getUserId());
+            if (user == null) throw new RuntimeException("User not found with id: " + request.getUserId());
 
-        ProductDto product =  productServiceFacade.getProductById(request.getProductId(), request.getQuantity());
+            ProductDto product =  productServiceFacade.getProductById(request.getProductId(), request.getQuantity());
 //        ProductDto product =  productServiceClient.getProductById(request.getProductId());
-        if (product == null) throw new RuntimeException("Product not found with id: " + request.getProductId());
+            if (product == null) throw new RuntimeException("Product not found with id: " + request.getProductId());
 
-        if (product.getStockQuantity() < request.getQuantity()){
-            throw new RuntimeException("Stock quantity less than requested quantity: " + request.getQuantity());
+            if (product.getStockQuantity() < request.getQuantity()){
+                throw new RuntimeException("Stock quantity less than requested quantity: " + request.getQuantity());
+            }
+
+            Order order = new Order();
+            order.setUserId(request.getUserId());
+            order.setTotalAmount(product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
+            order.setStatus("COMPLETED");
+
+            return orderRepository.save(order);
+
+        } catch (Exception e){
+            span.tag("error", e.getMessage());
+            throw e;
+        } finally {
+            span.end();
         }
-
-        Order order = new Order();
-        order.setUserId(request.getUserId());
-        order.setTotalAmount(product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
-        order.setStatus("COMPLETED");
-
-        return orderRepository.save(order);
     }
+
 
     public List<Order> getOrdersByUserId(Long userId) {
         return orderRepository.findByUserIdOrderByCreatedAtDesc(userId);
