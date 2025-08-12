@@ -19,10 +19,21 @@ resilience4j:
         # 50% 실패 시 Circuit Open (슬라이딩 윈도우 내의 실패율이 50%를 초과하면 서킷 브레이커가 'OPEN' 상태로 전환)
         failure-rate-threshold: 50
         permitted-number-of-calls-in-half-open-state: 2 # half-open일 때 몇번 요청할지
+
+      product-service:
+        sliding-window-type: count-based
+        sliding-window-size: 3
+        minimum-number-of-calls: 3
+        failure-rate-threshold: 50
+        permitted-number-of-calls-in-half-open-state: 2
+
   retry:
     retryAspectOrder: 2
     instances:
       user-service:
+        max-attempts: 2 # 최대 몇번 실행
+        wait-duration: 1s  #재시도 간격
+      product-service:
         max-attempts: 2 # 최대 몇번 실행
         wait-duration: 1s  #재시도 간격
 

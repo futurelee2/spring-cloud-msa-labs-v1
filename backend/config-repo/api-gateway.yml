@@ -14,7 +14,6 @@ spring:
             filters:
               - StripPrefix=1 # /api/users/**  -> /users/** (1개 제거)
 
-
           - id: product-service
             uri: lb://product-service
             predicates:

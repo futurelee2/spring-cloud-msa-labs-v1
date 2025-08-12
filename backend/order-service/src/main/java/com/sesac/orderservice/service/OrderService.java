@@ -6,6 +6,7 @@ import com.sesac.orderservice.client.dto.ProductDto;
 import com.sesac.orderservice.client.dto.UserDto;
 import com.sesac.orderservice.dto.OrderRequestDto;
 import com.sesac.orderservice.entity.Order;
+import com.sesac.orderservice.facade.ProductServiceFacade;
 import com.sesac.orderservice.facade.UserServiceFacade;
 import com.sesac.orderservice.repository.OrderRepository;
 import java.math.BigDecimal;
@@ -21,8 +22,11 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     //private final UserServiceClient userServiceClient; // Openfeign 추상화 클라이언트
-    private final UserServiceFacade  userServiceFacade;
-    private final ProductServiceClient productServiceClient;
+    //private final ProductServiceClient productServiceClient;
+
+    private final ProductServiceFacade productServiceFacade;
+    private final UserServiceFacade userServiceFacade;
+
 
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(
@@ -38,7 +42,8 @@ public class OrderService {
 //        UserDto user = userServiceClient.getUserById(request.getUserId()); // getUserById 호출할때 서킷브레이커 걸어주기
         if (user == null) throw new RuntimeException("User not found with id: " + request.getUserId());
 
-        ProductDto product =  productServiceClient.getProductById(request.getProductId());
+        ProductDto product =  productServiceFacade.getProductById(request.getProductId(), request.getQuantity());
+//        ProductDto product =  productServiceClient.getProductById(request.getProductId());
         if (product == null) throw new RuntimeException("Product not found with id: " + request.getProductId());
 
         if (product.getStockQuantity() < request.getQuantity()){
