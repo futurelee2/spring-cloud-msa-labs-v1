@@ -41,6 +41,15 @@ otel: #OpenTelemetry 설정
       service.name: ${spring.application.name}
 
 
-
+# 주문 이벤트 만듦
+order:
+  event:
+    exchange: order.exchange # exchange 이름 정의
+    queue:
+      notification: order.notification.queue # notification 큐 만듦 (알림 큐)
+      inventory: order.inventory.queue # 재고 큐
+    routing-key: # 알림큐, 재고 큐에 보낼때 사용하는 라우팅 키
+      notification: order.notification
+      inventory: order.inventory
 
 
