@@ -6,12 +6,15 @@ import com.sesac.orderservice.client.dto.ProductDto;
 import com.sesac.orderservice.client.dto.UserDto;
 import com.sesac.orderservice.dto.OrderRequestDto;
 import com.sesac.orderservice.entity.Order;
+import com.sesac.orderservice.event.OrderCreatedEvent;
+import com.sesac.orderservice.event.OrderEventPublisher;
 import com.sesac.orderservice.facade.ProductServiceFacade;
 import com.sesac.orderservice.facade.UserServiceFacade;
 import com.sesac.orderservice.repository.OrderRepository;
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ public class OrderService {
 //    private final ProductServiceFacade productServiceFacade;
     private final UserServiceFacade userServiceFacade;
     private final Tracer tracer;
+    private final OrderEventPublisher orderEventPublisher;
 
 
     public Order findById(Long id) {
@@ -58,14 +62,26 @@ public class OrderService {
         ProductDto product =  productServiceClient.getProductById(request.getProductId());
             if (product == null) throw new RuntimeException("Product not found with id: " + request.getProductId());
 
-            if (product.getStockQuantity() < request.getQuantity()){
-                throw new RuntimeException("Stock quantity less than requested quantity: " + request.getQuantity());
-            }
+//            if (product.getStockQuantity() < request.getQuantity()){
+//                throw new RuntimeException("Stock quantity less than requested quantity: " + request.getQuantity());
+//            }
 
             Order order = new Order();
             order.setUserId(request.getUserId());
             order.setTotalAmount(product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
             order.setStatus("COMPLETED");
+
+            // 비동기 이벤트 발행
+            OrderCreatedEvent event = new OrderCreatedEvent(
+                    order.getId(),
+                    request.getUserId(),
+                    request.getProductId(),
+                    request.getQuantity(),
+                    order.getTotalAmount(),
+                    LocalDateTime.now()
+            );
+            orderEventPublisher.publishOrderCreated(event);
+
 
             return orderRepository.save(order);
 
