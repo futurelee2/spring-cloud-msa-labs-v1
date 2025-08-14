@@ -1,4 +1,4 @@
-package com.sesac.orderservice.config;
+package com.sesac.paymentservice.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
