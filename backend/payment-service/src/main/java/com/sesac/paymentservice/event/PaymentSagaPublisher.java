@@ -3,6 +3,8 @@ package com.sesac.paymentservice.event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,8 +12,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentSagaPublisher {
 
-    @RabbitListener(queues = "${order.event.queue.payment-request}")
-    public void handlerPaymentRequest(PaymentRequestEvent event){
-        log.info("결제요청 이벤트 수신 - orderId:{} , amount{}", event.getOrderId(), event.getTotalAmount());
+    private final RabbitTemplate rabbitTemplate;
+
+    @Value("${order.event.exchange}")
+    private String exchange;
+    @Value("${order.event.routing-key.payment-completed}")
+    private String paymentCompletedRoutingKey;
+
+    @Value("${order.event.routing-key.payment-failed}")
+    private String paymentFailedRoutingKey;
+
+    @Value("${order.event.routing-key.inventory-restore}")
+    private String inventoryRestoreRoutingKey;
+    
+
+    public void publishPaymentCompleted(PaymentCompletedEvent event) {
+        rabbitTemplate.convertAndSend(exchange, paymentCompletedRoutingKey, event);
+
+    }
+
+    public void publishPaymentFailed(PaymentFailedEvent event) {
+        // order-service 결제 실패 이벤트 발행 - 주문 취소해!
+        rabbitTemplate.convertAndSend(exchange,paymentFailedRoutingKey, event);
+        // product-service 결제 실패 이벤트 발행 - 재고 복구해!
+        rabbitTemplate.convertAndSend(exchange,inventoryRestoreRoutingKey, event);
+        
     }
 }

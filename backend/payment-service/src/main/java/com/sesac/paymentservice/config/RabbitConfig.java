@@ -30,6 +30,15 @@ public class RabbitConfig {
     @Value("${order.event.queue.inventory}")
     private String inventoryQueue;
 
+    @Value("${order.event.queue.payment-completed}")
+    private String paymentCompletedQueue;
+    @Value("${order.event.queue.payment-failed}")
+    private String paymentFailedQueue;
+    @Value("${order.event.queue.inventory-restore}")
+    private String inventoryRestoreQueue;
+
+
+
     @Value("${order.event.routing-key.notification}")
     private String notificationRoutingKey;
 
@@ -40,6 +49,16 @@ public class RabbitConfig {
     private String paymentRoutingKey;
     @Value("${order.event.routing-key.inventory-failed}")
     private String InventoryRoutingKey;
+
+
+    @Value("${order.event.routing-key.payment-completed}")
+    private String paymentCompletedRoutingKey;
+    @Value("${order.event.routing-key.payment-failed}")
+    private String paymentFailedRoutingKey;
+    @Value("${order.event.routing-key.inventory-restore}")
+    private String inventoryRestoreRoutingKey;
+
+
 
     // Exchange 정의
     @Bean
@@ -70,6 +89,21 @@ public class RabbitConfig {
     }
 
 
+    @Bean
+    public Queue paymentCompletedQueue() {
+        return QueueBuilder.durable(paymentCompletedQueue).build();
+    }
+
+    @Bean
+    public Queue paymentFailedQueue() {
+        return QueueBuilder.durable(paymentFailedQueue).build();
+    }
+    @Bean
+    public Queue inventoryRestoreQueue() {
+        return QueueBuilder.durable(inventoryRestoreQueue).build();
+    }
+
+
     // Binding 정의
     @Bean
     public Binding notificationBinding() {
@@ -97,6 +131,28 @@ public class RabbitConfig {
         return BindingBuilder.bind((inventoryFailedQueue()))
                              .to(orderExchange())
                              .with(InventoryRoutingKey);
+    }
+
+
+    @Bean
+    public Binding paymentCompletedBinding() {
+        return BindingBuilder.bind((paymentCompletedQueue()))
+                             .to(orderExchange())
+                             .with(paymentCompletedRoutingKey);
+    }
+
+    @Bean
+    public Binding paymentFailedBinding() {
+        return BindingBuilder.bind((paymentFailedQueue()))
+                             .to(orderExchange())
+                             .with(paymentFailedRoutingKey);
+    }
+
+    @Bean
+    public Binding inventoryRestoreBinding() {
+        return BindingBuilder.bind((inventoryRestoreQueue()))
+                             .to(orderExchange())
+                             .with(inventoryRestoreRoutingKey);
     }
 
 

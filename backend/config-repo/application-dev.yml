@@ -56,11 +56,17 @@ order:
       inventory: order.inventory.queue # 재고 큐
       payment-request: order.payment.request.queue
       inventory-failed: order.inventory.failed.queue
+      payment-completed: order.payment.completed.queue
+      payment-failed: order.payment.failed.queue
+      inventory-restore: order.inventory.restore.queue
     routing-key: # 알림큐, 재고 큐에 보낼때 사용하는 라우팅 키 - 키를 보고 알맞은 큐에 들어감
       notification: order.notification
       inventory: order.inventory
       payment-request: order.payment.request
       inventory-failed: order.inventory.failed
+      payment-completed: order.payment.completed
+      payment-failed: order.payment.failed
+      inventory-restore: order.inventory.restore
 
 
 

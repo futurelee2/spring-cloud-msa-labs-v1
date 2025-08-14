@@ -71,10 +71,11 @@ public class OrderService {
             order.setUserId(request.getUserId());
             order.setTotalAmount(product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
             order.setStatus(OrderStatus.PENDING);
+            Order savedOrder = orderRepository.save(order);
 
             // 비동기 이벤트 발행
             OrderCreatedEvent event = new OrderCreatedEvent(
-                    order.getId(),
+                    savedOrder.getId(),
                     request.getUserId(),
                     request.getProductId(),
                     request.getQuantity(),
