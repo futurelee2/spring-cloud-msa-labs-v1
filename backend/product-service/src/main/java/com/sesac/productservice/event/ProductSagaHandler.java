@@ -45,4 +45,20 @@ public class ProductSagaHandler { // 이벤트 수신
 
         }
     }
+
+    @RabbitListener(queues = "${order.event.queue.inventory-restore}" )
+    public void handlePaymentFailed(PaymentFailedEvent event){
+        log.error("결제 실패 이벤트 수신 - orderId : {}, reason : {}",event.getOrderId(),event.getReason());
+
+        try{
+            productService.restoreStock(event.getProductId(), event.getQuantity());
+            log.error("재고 복구 완료 (보상 트랜젝션) - orderId:{}, productId : {}, quantity: {}", event.getOrderId(), event.getProductId(), event.getQuantity());
+
+        } catch (Exception e) {
+            log.error("재고 복구 실패 - orderId:{} , error:{}", event.getOrderId(), e.getMessage());
+        }
+
+
+    }
+
 }

@@ -41,4 +41,13 @@ public class ProductService {
         log.info("재고 차감 완료");
 
     }
+
+    @Transactional
+    public void restoreStock(Long productId, Integer quantity) {
+        Product product = productRepository.findById(productId).orElseThrow(()-> new RuntimeException("상품을 찾을 수 없습니다: " + productId));
+        product.setStockQuantity(product.getStockQuantity() + quantity);
+        productRepository.save(product);
+
+
+    }
 }
